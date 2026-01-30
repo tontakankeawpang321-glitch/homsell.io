@@ -61,12 +61,13 @@
         <span class="font-bold text-xl text-slate-800 hidden sm:block tracking-tight">Home<span class="text-blue-600">Market</span></span>
       </div>
       
-      <div class="hidden md:flex flex-grow justify-end gap-2">
-         <select id="filter_province_desktop" class="border border-blue-200 rounded-full px-4 py-2 text-sm focus:ring-2 focus:ring-blue-400 bg-white outline-none w-40 cursor-pointer hover:bg-blue-50 transition-colors text-slate-700">
+      <div class="hidden md:flex flex-grow justify-end gap-2 items-center">
+         <select id="filter_province_desktop" class="border border-blue-200 rounded-full px-4 py-2 text-sm focus:ring-2 focus:ring-blue-400 bg-white outline-none w-36 cursor-pointer hover:bg-blue-50 transition-colors text-slate-700">
             <option value="all">ทุกจังหวัด</option>
          </select>
+         <input id="filter_district_desktop" type="text" placeholder="ระบุอำเภอ/เขต..." class="px-4 py-2 border border-blue-200 rounded-full text-sm focus:ring-2 focus:ring-blue-400 w-36 outline-none text-slate-700 placeholder-slate-400 bg-white shadow-sm">
          <div class="relative">
-             <input id="q_desktop" type="text" placeholder="ค้นหาทำเล, ชื่อโครงการ..." class="pl-10 pr-4 py-2 border border-blue-200 rounded-full text-sm focus:ring-2 focus:ring-blue-400 w-64 shadow-sm outline-none text-slate-700 placeholder-slate-400">
+             <input id="q_desktop" type="text" placeholder="ค้นหาชื่อโครงการ..." class="pl-10 pr-4 py-2 border border-blue-200 rounded-full text-sm focus:ring-2 focus:ring-blue-400 w-56 shadow-sm outline-none text-slate-700 placeholder-slate-400">
              <i class="fa-solid fa-search absolute left-3.5 top-3 text-blue-400"></i>
          </div>
       </div>
@@ -79,13 +80,14 @@
 
 <div class="md:hidden bg-white/95 backdrop-blur border-b border-blue-100 p-3 sticky top-16 z-30 space-y-2 shadow-sm">
     <div class="flex gap-2">
-        <select id="filter_province_mobile" class="border border-blue-200 rounded-xl px-2 py-2 text-sm bg-white outline-none w-1/3 text-slate-700 focus:border-blue-500">
+        <select id="filter_province_mobile" class="border border-blue-200 rounded-xl px-2 py-2 text-sm bg-white outline-none w-1/2 text-slate-700 focus:border-blue-500">
             <option value="all">ทุกจังหวัด</option>
         </select>
-        <div class="relative w-2/3">
-            <input id="q_mobile" type="text" placeholder="ค้นหา..." class="w-full pl-10 pr-4 py-2 bg-blue-50 border border-blue-100 rounded-xl text-sm outline-none focus:bg-white focus:ring-1 focus:ring-blue-500 transition-colors text-slate-700 placeholder-slate-400">
-            <i class="fa-solid fa-search absolute left-3.5 top-2.5 text-blue-500"></i>
-        </div>
+        <input id="filter_district_mobile" type="text" placeholder="ระบุอำเภอ/เขต..." class="w-1/2 px-3 py-2 border border-blue-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-blue-500 bg-white text-slate-700 placeholder-slate-400">
+    </div>
+    <div class="relative w-full">
+        <input id="q_mobile" type="text" placeholder="ค้นหาชื่อโครงการ..." class="w-full pl-10 pr-4 py-2 bg-blue-50 border border-blue-100 rounded-xl text-sm outline-none focus:bg-white focus:ring-1 focus:ring-blue-500 transition-colors text-slate-700 placeholder-slate-400">
+        <i class="fa-solid fa-search absolute left-3.5 top-2.5 text-blue-500"></i>
     </div>
 </div>
 
@@ -153,10 +155,13 @@
         
         <div class="grid grid-cols-1 gap-3 bg-blue-50/50 p-4 rounded-xl border border-blue-100/50 mb-4">
             <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-blue-500 shadow-sm border border-blue-100 flex-shrink-0"><i class="fa-solid fa-user text-sm"></i></div>
-                <div class="min-w-0">
-                    <p class="text-[10px] text-slate-400 uppercase tracking-wide font-bold">ผู้ติดต่อ</p>
-                    <p id="viewContact" class="font-medium text-slate-800 text-sm truncate"></p>
+                <div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-blue-500 shadow-sm border border-blue-100 flex-shrink-0"><i class="fa-solid fa-phone text-sm"></i></div>
+                <div class="min-w-0 w-full">
+                    <p class="text-[10px] text-slate-400 uppercase tracking-wide font-bold">เบอร์โทร</p>
+                    <div class="flex items-center justify-between">
+                         <p id="viewContact" class="font-medium text-slate-800 text-sm truncate"></p>
+                         <a id="btnCall" href="#" class="text-xs bg-green-500 text-white px-3 py-1.5 rounded-lg hover:bg-green-600 transition-colors shadow-sm font-bold flex items-center gap-1"><i class="fa-solid fa-phone"></i> โทรออก</a>
+                    </div>
                 </div>
             </div>
              <div class="flex items-start gap-3">
@@ -214,9 +219,20 @@
                     <option value="">เลือกจังหวัด</option>
                 </select>
             </div>
-            <div>
+             <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5 ml-1">เขต/อำเภอ <span class="text-red-500">*</span></label>
+                <input id="input_district" type="text" class="w-full px-3 py-2.5 border border-blue-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-400 text-sm bg-blue-50/30 text-slate-800" placeholder="ระบุเขต/อำเภอ">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+             <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5 ml-1">ราคา (บาท) <span class="text-red-500">*</span></label>
                 <input id="price" type="number" class="w-full px-3 py-2.5 border border-blue-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-400 text-sm bg-blue-50/30 text-slate-800" placeholder="0">
+            </div>
+            <div>
+                 <label class="block text-xs font-bold text-slate-700 mb-1.5 ml-1">เบอร์โทร</label>
+                 <input id="contact_name" type="text" class="w-full px-3 py-2.5 border border-blue-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-400 text-sm bg-blue-50/30 text-slate-800" placeholder="08x-xxx-xxxx">
             </div>
         </div>
 
@@ -235,9 +251,8 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
-            <div><label class="block text-xs font-bold text-slate-700 mb-1.5 ml-1">ผู้ติดต่อ</label><input id="contact_name" type="text" class="w-full px-3 py-2.5 border border-blue-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-400 text-sm bg-blue-50/30 text-slate-800"></div>
-            <div><label class="block text-xs font-bold text-slate-700 mb-1.5 ml-1">เขต/อำเภอ</label><input id="address" type="text" class="w-full px-3 py-2.5 border border-blue-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-400 text-sm bg-blue-50/30 text-slate-800"></div>
+        <div class="grid grid-cols-1 gap-3">
+            <div><label class="block text-xs font-bold text-slate-700 mb-1.5 ml-1">ชื่อผู้ลงประกาศ</label><input id="address" type="text" class="w-full px-3 py-2.5 border border-blue-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-400 text-sm bg-blue-50/30 text-slate-800"></div>
         </div>
 
         <div>
@@ -272,6 +287,14 @@
 // *** เปลี่ยน URL นี้เป็น Web App URL ของคุณที่ได้จากการ Deploy ***
 const API_URL = "https://script.google.com/macros/s/AKfycbzq5SPsOZVyqBXUKKzTRd7CRpbFeHsvoQTkfM6-wqGASTKrDkW4M1hf-HP8ct1PM0QRfw/exec"; 
 
+// --- UTILS ---
+function driveIdToLh3(id, size = 800) {
+    if (!id) return '';
+    // ถ้าเป็น URL อยู่แล้ว (เช่น unsplash / base64) ให้ใช้ตรงๆ
+    if (id.startsWith('http') || id.startsWith('data:image')) return id;
+    return `https://lh3.googleusercontent.com/d/${id}=w${size}`;
+}
+
 const PROVINCES = ["กรุงเทพมหานคร", "กระบี่", "กาญจนบุรี", "กาฬสินธุ์", "กำแพงเพชร", "ขอนแก่น", "จันทบุรี", "ฉะเชิงเทรา", "ชลบุรี", "ชัยนาท", "ชัยภูมิ", "ชุมพร", "เชียงราย", "เชียงใหม่", "ตรัง", "ตราด", "ตาก", "นครนายก", "นครปฐม", "นครพนม", "นครราชสีมา", "นครศรีธรรมราช", "นครสวรรค์", "นนทบุรี", "นราธิวาส", "น่าน", "บึงกาฬ", "บุรีรัมย์", "ปทุมธานี", "ประจวบคีรีขันธ์", "ปราจีนบุรี", "ปัตตานี", "พระนครศรีอยุธยา", "พะเยา", "พังงา", "พัทลุง", "พิจิตร", "พิษณุโลก", "เพชรบุรี", "เพชรบูรณ์", "แพร่", "ภูเก็ต", "มหาสารคาม", "มุกดาหาร", "แม่ฮ่องสอน", "ยโสธร", "ยะลา", "ร้อยเอ็ด", "ระนอง", "ระยอง", "ราชบุรี", "ลพบุรี", "ลำปาง", "ลำพูน", "เลย", "ศรีสะเกษ", "สกลนคร", "สงขลา", "สตูล", "สมุทรปราการ", "สมุทรสงคราม", "สมุทรสาคร", "สระแก้ว", "สระบุรี", "สิงห์บุรี", "สุโขทัย", "สุพรรณบุรี", "สุราษฎร์ธานี", "สุรินทร์", "หนองคาย", "หนองบัวลำภู", "อ่างทอง", "อำนาจเจริญ", "อุดรธานี", "อุตรดิตถ์", "อุทัยธานี", "อุบลราชธานี"].sort();
 
 // Mock Data (Fallback)
@@ -281,8 +304,9 @@ const defaultPosts = [
         title: "ขายบ้านเดี่ยว 2 ชั้น หมู่บ้านลัดดาวัลย์ ราชพฤกษ์",
         price: 15900000,
         province: "กรุงเทพมหานคร",
-        address: "เขตตลิ่งชัน",
-        contact_name: "คุณวิภา",
+        district: "ตลิ่งชัน",
+        address: "คุณวิภา",
+        contact_name: "081-123-4567",
         body: "บ้านเดี่ยวหลังใหญ่ 4 ห้องนอน 3 ห้องน้ำ จอดรถได้ 2 คัน ตกแต่งครบ พร้อมเข้าอยู่ สภาพใหม่มาก ใกล้ห้างสรรพสินค้า",
         images: ["https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80", "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"],
         lat: 13.7763,
@@ -293,8 +317,9 @@ const defaultPosts = [
         title: "ทาวน์โฮม 3 ชั้น โมเดิร์น ใกล้ BTS อารีย์",
         price: 8500000,
         province: "กรุงเทพมหานคร",
-        address: "เขตพญาไท",
-        contact_name: "คุณนนท์",
+        district: "พญาไท",
+        address: "คุณนนท์",
+        contact_name: "089-987-6543",
         body: "ทาวน์โฮมทำเลทอง เหมาะทำโฮมออฟฟิศหรืออยู่อาศัย 3 ห้องนอน 4 ห้องน้ำ รีโนเวทใหม่ทั้งหลัง",
         images: ["https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"],
         lat: 13.7800,
@@ -325,20 +350,24 @@ const dom = {
     title: document.getElementById('title'), price: document.getElementById('price'),
     contactName: document.getElementById('contact_name'), address: document.getElementById('address'),
     province: document.getElementById('input_province'),
+    district: document.getElementById('input_district'), // New field
     body: document.getElementById('body'), imgInput: document.getElementById('img'),
     previewList: document.getElementById('previewList'), uploadBtn: document.getElementById('uploadBtn'),
     imgCount: document.getElementById('imgCount'),
     lat: document.getElementById('lat'), lng: document.getElementById('lng'),
     latlng_display: document.getElementById('latlng_display'),
     filterDesktop: document.getElementById('filter_province_desktop'),
+    filterDistrictDesktop: document.getElementById('filter_district_desktop'), // New filter
     filterMobile: document.getElementById('filter_province_mobile'),
+    filterDistrictMobile: document.getElementById('filter_district_mobile'), // New filter
     searchDesktop: document.getElementById('q_desktop'), searchMobile: document.getElementById('q_mobile'),
     slider: document.getElementById('imageSlider'), sliderImg: document.getElementById('sliderMainImage'),
     sliderCounter: document.getElementById('sliderCounter'),
     viewTitle: document.getElementById('viewTitle'), viewPrice: document.getElementById('viewPrice'),
     viewContact: document.getElementById('viewContact'), viewLocation: document.getElementById('viewLocation'),
     viewBody: document.getElementById('viewBody'), viewMapContainer: document.getElementById('viewMapContainer'),
-    viewImages: document.getElementById('viewImages'), viewDeleteBtn: document.getElementById('btnDeletePost')
+    viewImages: document.getElementById('viewImages'), viewDeleteBtn: document.getElementById('btnDeletePost'),
+    btnCall: document.getElementById('btnCall') // Call button
 };
 
 // --- INIT ---
@@ -348,7 +377,7 @@ function init() {
     initMap();
     
     // Event Listeners
-    [dom.searchDesktop, dom.searchMobile].forEach(el => el.addEventListener('input', debounce(applyFilters, 300)));
+    [dom.searchDesktop, dom.searchMobile, dom.filterDistrictDesktop, dom.filterDistrictMobile].forEach(el => el.addEventListener('input', debounce(applyFilters, 300)));
     [dom.filterDesktop, dom.filterMobile].forEach(el => el.addEventListener('change', (e) => {
         dom.filterDesktop.value = e.target.value; dom.filterMobile.value = e.target.value; applyFilters();
     }));
@@ -357,6 +386,7 @@ function init() {
 function refreshApp() {
     dom.searchDesktop.value = ''; dom.searchMobile.value = '';
     dom.filterDesktop.value = 'all'; dom.filterMobile.value = 'all';
+    dom.filterDistrictDesktop.value = ''; dom.filterDistrictMobile.value = '';
     loadPosts();
 }
 
@@ -389,6 +419,7 @@ async function loadPosts() {
             title: item.title || 'ไม่มีชื่อโครงการ',
             price: Number(item.price) || 0,
             province: item.province || 'ไม่ระบุ',
+            district: item.district || '', // Load district
             address: item.address || '',
             contact_name: item.contact_name || '',
             body: item.body || '',
@@ -431,12 +462,15 @@ function parseImages(imgData) {
 
 function applyFilters() {
     const q = dom.searchDesktop.value.toLowerCase() || dom.searchMobile.value.toLowerCase();
+    const qDist = dom.filterDistrictDesktop.value.toLowerCase() || dom.filterDistrictMobile.value.toLowerCase();
     const prov = dom.filterDesktop.value;
     
     filteredPosts = posts.filter(p => {
-        const matchText = (p.title + p.body + p.province + (p.price + "")).toLowerCase().includes(q);
+        const matchText = (p.title + p.body + (p.price + "")).toLowerCase().includes(q);
+        // Force convert to string before toLowerCase
+        const matchDist = (String(p.district || "")).toLowerCase().includes(qDist);
         const matchProv = prov === 'all' || p.province === prov;
-        return matchText && matchProv;
+        return matchText && matchDist && matchProv;
     });
     
     currentPage = 1;
@@ -455,8 +489,12 @@ function renderBoard() {
     }
 
     pageData.forEach(p => {
-        const imgUrl = (p.images && p.images.length > 0) ? p.images[0] : 'https://placehold.co/400x300?text=No+Image';
+        const imgUrl = (p.images && p.images.length > 0)
+            ? driveIdToLh3(p.images[0], 600)
+            : 'https://placehold.co/400x300?text=No+Image';
         
+        const locText = (p.district ? p.district + ', ' : '') + p.province;
+
         const card = document.createElement('div');
         card.className = "bg-white rounded-lg sm:rounded-xl shadow-sm border border-blue-50 hover:shadow-lg hover:shadow-blue-100 transition-all overflow-hidden cursor-pointer flex flex-col h-full group";
         card.onclick = () => viewPost(p.id);
@@ -464,9 +502,9 @@ function renderBoard() {
         card.innerHTML = `
             <div class="h-28 sm:h-32 md:h-40 bg-slate-200 relative overflow-hidden">
                 <img src="${imgUrl}" class="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500">
-                <div class="absolute top-1 right-1 sm:top-2 sm:right-2 bg-white/95 backdrop-blur-sm px-1.5 py-0.5 sm:px-2 rounded sm:rounded-lg text-[10px] sm:text-[10px] font-bold text-blue-600 shadow-sm border border-blue-100 truncate max-w-[80px] sm:max-w-none"><i class="fa-solid fa-location-dot mr-1"></i>${p.province}</div>
+                <div class="absolute top-1 right-1 sm:top-2 sm:right-2 bg-white/95 backdrop-blur-sm px-1.5 py-0.5 sm:px-2 rounded sm:rounded-lg text-[10px] sm:text-[10px] font-bold text-blue-600 shadow-sm border border-blue-100 truncate max-w-[100px] sm:max-w-none"><i class="fa-solid fa-location-dot mr-1"></i>${locText}</div>
                 <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-2">
-                     <p class="text-white text-[10px] sm:text-xs font-medium truncate">${p.address || ''}</p>
+                     <p class="text-white text-[10px] sm:text-xs font-medium truncate">ผู้ลง: ${p.address || '-'}</p>
                 </div>
             </div>
             <div class="p-2 sm:p-3 flex flex-col flex-grow">
@@ -578,7 +616,8 @@ function resetForm() {
     dom.title.value = '';
     dom.price.value = '';
     dom.contactName.value = '';
-    dom.address.value = '';
+    dom.address.value = ''; // Announcer Name
+    dom.district.value = ''; // District
     dom.body.value = '';
     dom.province.value = '';
     dom.imgInput.value = '';
@@ -589,8 +628,7 @@ function resetForm() {
     dom.latlng_display.classList.add('text-gray-400');
     
     formImages = [];
-    dom.previewList.innerHTML = '';
-    dom.imgCount.textContent = '0/3';
+    renderFormImages();
     
     if (marker) {
         map.removeLayer(marker);
@@ -607,7 +645,10 @@ function viewPost(id) {
     dom.viewTitle.textContent = post.title;
     dom.viewPrice.textContent = '฿' + parseInt(post.price).toLocaleString();
     dom.viewContact.textContent = post.contact_name || '-';
-    dom.viewLocation.textContent = (post.address ? post.address + ' ' : '') + post.province;
+    // Update phone button
+    dom.btnCall.href = `tel:${post.contact_name}`;
+    
+    dom.viewLocation.textContent = (post.district ? post.district + ' ' : '') + post.province;
     dom.viewBody.textContent = post.body || '-';
     
     // Images
@@ -616,7 +657,7 @@ function viewPost(id) {
         sliderImages = post.images;
         post.images.forEach((url, idx) => {
             const img = document.createElement('img');
-            img.src = url;
+            img.src = driveIdToLh3(url, 800);
             img.className = "h-40 w-auto rounded-lg object-cover cursor-pointer border border-blue-100 hover:opacity-90 transition-opacity";
             img.onclick = () => openImageSlider(idx);
             dom.viewImages.appendChild(img);
@@ -695,7 +736,7 @@ function changeSlide(step) {
 }
 
 function updateSliderImage() {
-    dom.sliderImg.src = sliderImages[sliderIndex];
+    dom.sliderImg.src = driveIdToLh3(sliderImages[sliderIndex], 1200);
     dom.sliderCounter.textContent = `${sliderIndex + 1} / ${sliderImages.length}`;
 }
 
@@ -713,6 +754,8 @@ function appendImages(input) {
             };
             reader.readAsDataURL(file);
         });
+        
+        input.value = '';
     }
 }
 
@@ -744,17 +787,23 @@ function validateForm() {
     if (!dom.title.value.trim()) { dom.title.classList.add('input-error'); isValid = false; }
     else dom.title.classList.remove('input-error');
     
-    if (!dom.price.value) { dom.price.classList.add('input-error'); isValid = false; }
-    else dom.price.classList.remove('input-error');
-    
     if (!dom.province.value) { dom.province.classList.add('input-error'); isValid = false; }
     else dom.province.classList.remove('input-error');
+    
+    if (!dom.district.value.trim()) { dom.district.classList.add('input-error'); isValid = false; }
+    else dom.district.classList.remove('input-error');
+
+    if (!dom.price.value) { dom.price.classList.add('input-error'); isValid = false; }
+    else dom.price.classList.remove('input-error');
     
     return isValid;
 }
 
 async function savePost() {
     if (!validateForm()) {
+        const modalContent = dom.dlg.querySelector('.overflow-y-auto');
+        if (modalContent) modalContent.scrollTop = 0;
+
         setTimeout(() => document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error')), 500);
         return;
     }
@@ -774,7 +823,8 @@ async function savePost() {
         title: dom.title.value,
         price: dom.price.value,
         province: dom.province.value,
-        address: dom.address.value,
+        district: dom.district.value, // Added district
+        address: dom.address.value, // Announcer name
         contact_name: dom.contactName.value,
         body: dom.body.value,
         lat: dom.lat.value,
@@ -796,6 +846,7 @@ async function savePost() {
             title: dom.title.value,
             price: Number(dom.price.value),
             province: dom.province.value,
+            district: dom.district.value,
             address: dom.address.value,
             contact_name: dom.contactName.value,
             body: dom.body.value,
@@ -871,8 +922,9 @@ function fillDemoData() {
     dom.title.value = "บ้านเดี่ยว 2 ชั้น หมู่บ้านสิริเพลส (Demo)";
     dom.price.value = "4500000";
     dom.province.value = "นนทบุรี";
-    dom.address.value = "อ.บางใหญ่";
-    dom.contactName.value = "คุณศักดิ์สิทธิ์";
+    dom.district.value = "บางใหญ่";
+    dom.address.value = "คุณสมชาย";
+    dom.contactName.value = "089-123-4567";
     dom.body.value = "บ้านเดี่ยวหลังมุม 50 ตร.ว. 3 ห้องนอน 2 ห้องน้ำ\n- ต่อเติมครัวหลังบ้าน\n- จอดรถได้ 2 คัน\n- ใกล้เซ็นทรัลเวสต์เกต";
     
     const lat = 13.8700 + (Math.random() * 0.05);
