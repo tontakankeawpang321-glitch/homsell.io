@@ -178,7 +178,7 @@
                     <p class="text-[10px] text-slate-400 uppercase tracking-wide font-bold">เบอร์โทร</p>
                     <div class="flex items-center justify-between">
                          <p id="viewContact" class="font-medium text-slate-800 text-sm truncate"></p>
-                         <a id="btnCall" href="#" class="text-xs bg-green-500 text-white px-3 py-1.5 rounded-lg hover:bg-green-600 transition-colors shadow-sm font-bold flex items-center gap-1"><i class="fa-solid fa-phone"></i> โทรออก</a>
+                         <button id="btnCopyTel" type="button" class="text-xs bg-green-500 text-white px-3 py-1.5 rounded-lg hover:bg-green-600 transition-colors shadow-sm font-bold flex items-center gap-1"><i class="fa-regular fa-copy"></i> คัดลอกเบอร์</button>
                     </div>
                 </div>
             </div>
@@ -383,7 +383,7 @@ const dom = {
     viewContact: document.getElementById('viewContact'), viewLocation: document.getElementById('viewLocation'),
     viewBody: document.getElementById('viewBody'), viewMapContainer: document.getElementById('viewMapContainer'),
     viewImages: document.getElementById('viewImages'), viewDeleteBtn: document.getElementById('btnDeletePost'),
-    btnCall: document.getElementById('btnCall')
+    btnCopyTel: document.getElementById('btnCopyTel') // Copy button
 };
 
 // --- INIT ---
@@ -665,9 +665,34 @@ function viewPost(id) {
     dom.viewPrice.textContent = '฿' + parseInt(post.price).toLocaleString();
     dom.viewContact.textContent = post.contact_name || '-';
     
-    // FIX: Clean tel number safely
-    const cleanTel = (String(post.contact_name || '')).replace(/[^0-9]/g, '');
-    dom.btnCall.href = cleanTel ? `tel:${cleanTel}` : '#';
+    // Copy Logic
+    const btn = dom.btnCopyTel;
+    // Reset button state
+    btn.innerHTML = '<i class="fa-regular fa-copy"></i> คัดลอกเบอร์';
+    btn.className = "text-xs bg-green-500 text-white px-3 py-1.5 rounded-lg hover:bg-green-600 transition-colors shadow-sm font-bold flex items-center gap-1";
+    
+    btn.onclick = () => {
+        const textToCopy = post.contact_name || '';
+        // Create temporary textarea to copy text
+        const textArea = document.createElement("textarea");
+        textArea.value = textToCopy;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand("copy");
+            // Feedback UI
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> คัดลอกแล้ว';
+            btn.className = "text-xs bg-gray-500 text-white px-3 py-1.5 rounded-lg transition-colors shadow-sm font-bold flex items-center gap-1 cursor-default";
+            
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fa-regular fa-copy"></i> คัดลอกเบอร์';
+                btn.className = "text-xs bg-green-500 text-white px-3 py-1.5 rounded-lg hover:bg-green-600 transition-colors shadow-sm font-bold flex items-center gap-1";
+            }, 2000);
+        } catch (err) {
+            console.error('Copy failed', err);
+        }
+        document.body.removeChild(textArea);
+    };
     
     dom.viewLocation.textContent = (post.district ? post.district + ' ' : '') + post.province;
     dom.viewBody.textContent = post.body || '-';
