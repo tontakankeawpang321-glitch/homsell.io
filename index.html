@@ -673,13 +673,34 @@ function viewPost(id) {
     
     btn.onclick = () => {
         const textToCopy = post.contact_name || '';
-        // Create temporary textarea to copy text
+        
+        // Use textarea hack for maximum compatibility (especially in iframes/mobile)
         const textArea = document.createElement("textarea");
         textArea.value = textToCopy;
+        
+        // Ensure it's not visible but part of DOM
+        // Prevent zooming on iOS
+        textArea.style.fontSize = '12pt';
+        
+        // Reset box model
+        textArea.style.border = '0';
+        textArea.style.padding = '0';
+        textArea.style.margin = '0';
+        
+        // Move element out of screen horizontally
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-9999px';
+        textArea.style.top = '0';
+
         document.body.appendChild(textArea);
+        
+        textArea.focus();
         textArea.select();
+        textArea.setSelectionRange(0, 99999); /* For mobile devices */
+
         try {
             document.execCommand("copy");
+            
             // Feedback UI
             btn.innerHTML = '<i class="fa-solid fa-check"></i> คัดลอกแล้ว';
             btn.className = "text-xs bg-gray-500 text-white px-3 py-1.5 rounded-lg transition-colors shadow-sm font-bold flex items-center gap-1 cursor-default";
@@ -690,7 +711,10 @@ function viewPost(id) {
             }, 2000);
         } catch (err) {
             console.error('Copy failed', err);
+            // Fallback
+            prompt("กด Ctrl+C เพื่อคัดลอก:", textToCopy);
         }
+        
         document.body.removeChild(textArea);
     };
     
