@@ -72,10 +72,7 @@
          </div>
       </div>
       
-      <!-- ปุ่มลงประกาศบนมือถือด้านบนซ่อนแล้ว เพื่อไปใช้ด้านล่างแทน -->
-      <div class="md:hidden flex gap-2 w-8">
-         <!-- Spacer -->
-      </div>
+      <div class="md:hidden flex gap-2 w-8"></div>
   </div>
 </nav>
 
@@ -123,21 +120,16 @@
 <!-- Bottom Navigation (App Style) -->
 <nav class="md:hidden fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur border-t border-slate-200 z-50 pb-safe shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
     <div class="flex justify-around items-center h-16 max-w-md mx-auto">
-        <!-- ปุ่มหน้าหลัก -->
         <button onclick="refreshApp(); window.scrollTo({top:0, behavior:'smooth'})" class="flex-1 flex flex-col items-center justify-center h-full text-slate-500 hover:text-blue-600 focus:text-blue-600 group transition-colors">
             <i class="fa-solid fa-house text-xl mb-1 group-active:scale-95 transition-transform"></i>
             <span class="text-[10px] font-medium">หน้าหลัก</span>
         </button>
-
-        <!-- ปุ่มลงประกาศ (ตรงกลาง เด่น) -->
         <div class="relative w-20 flex justify-center h-full">
             <button onclick="openNewPostModal()" class="absolute -top-6 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white w-14 h-14 rounded-full shadow-lg shadow-blue-300 flex items-center justify-center text-2xl active:scale-90 transition-all ring-4 ring-f0f9ff hover:shadow-xl hover:-translate-y-1">
                 <i class="fa-solid fa-plus"></i>
             </button>
             <span class="absolute bottom-1 text-[10px] font-bold text-blue-600">ลงประกาศ</span>
         </div>
-
-        <!-- ปุ่มค้นหา (Dummy เพื่อความสมดุล) -->
         <button onclick="document.getElementById('q_mobile').focus()" class="flex-1 flex flex-col items-center justify-center h-full text-slate-500 hover:text-blue-600 focus:text-blue-600 group transition-colors">
             <i class="fa-solid fa-magnifying-glass text-xl mb-1 group-active:scale-95 transition-transform"></i>
             <span class="text-[10px] font-medium">ค้นหา</span>
@@ -310,20 +302,18 @@
 
 <script>
 // --- CONFIGURATION & DATA ---
-// *** เปลี่ยน URL นี้เป็น Web App URL ของคุณที่ได้จากการ Deploy ***
 const API_URL = "https://script.google.com/macros/s/AKfycbzq5SPsOZVyqBXUKKzTRd7CRpbFeHsvoQTkfM6-wqGASTKrDkW4M1hf-HP8ct1PM0QRfw/exec"; 
 
 // --- UTILS ---
 function driveIdToLh3(id, size = 800) {
     if (!id) return '';
-    // ถ้าเป็น URL อยู่แล้ว (เช่น unsplash / base64) ให้ใช้ตรงๆ
-    if (id.startsWith('http') || id.startsWith('data:image')) return id;
-    return `https://lh3.googleusercontent.com/d/${id}=w${size}`;
+    const strId = String(id); // FIX: Force convert to string to prevent 'startsWith' error
+    if (strId.startsWith('http') || strId.startsWith('data:image')) return strId;
+    return `https://lh3.googleusercontent.com/d/${strId}=w${size}`;
 }
 
 const PROVINCES = ["กรุงเทพมหานคร", "กระบี่", "กาญจนบุรี", "กาฬสินธุ์", "กำแพงเพชร", "ขอนแก่น", "จันทบุรี", "ฉะเชิงเทรา", "ชลบุรี", "ชัยนาท", "ชัยภูมิ", "ชุมพร", "เชียงราย", "เชียงใหม่", "ตรัง", "ตราด", "ตาก", "นครนายก", "นครปฐม", "นครพนม", "นครราชสีมา", "นครศรีธรรมราช", "นครสวรรค์", "นนทบุรี", "นราธิวาส", "น่าน", "บึงกาฬ", "บุรีรัมย์", "ปทุมธานี", "ประจวบคีรีขันธ์", "ปราจีนบุรี", "ปัตตานี", "พระนครศรีอยุธยา", "พะเยา", "พังงา", "พัทลุง", "พิจิตร", "พิษณุโลก", "เพชรบุรี", "เพชรบูรณ์", "แพร่", "ภูเก็ต", "มหาสารคาม", "มุกดาหาร", "แม่ฮ่องสอน", "ยโสธร", "ยะลา", "ร้อยเอ็ด", "ระนอง", "ระยอง", "ราชบุรี", "ลพบุรี", "ลำปาง", "ลำพูน", "เลย", "ศรีสะเกษ", "สกลนคร", "สงขลา", "สตูล", "สมุทรปราการ", "สมุทรสงคราม", "สมุทรสาคร", "สระแก้ว", "สระบุรี", "สิงห์บุรี", "สุโขทัย", "สุพรรณบุรี", "สุราษฎร์ธานี", "สุรินทร์", "หนองคาย", "หนองบัวลำภู", "อ่างทอง", "อำนาจเจริญ", "อุดรธานี", "อุตรดิตถ์", "อุทัยธานี", "อุบลราชธานี"].sort();
 
-// Mock Data (Fallback)
 const defaultPosts = [
     {
         id: 101,
@@ -376,16 +366,16 @@ const dom = {
     title: document.getElementById('title'), price: document.getElementById('price'),
     contactName: document.getElementById('contact_name'), address: document.getElementById('address'),
     province: document.getElementById('input_province'),
-    district: document.getElementById('input_district'), // New field
+    district: document.getElementById('input_district'), 
     body: document.getElementById('body'), imgInput: document.getElementById('img'),
     previewList: document.getElementById('previewList'), uploadBtn: document.getElementById('uploadBtn'),
     imgCount: document.getElementById('imgCount'),
     lat: document.getElementById('lat'), lng: document.getElementById('lng'),
     latlng_display: document.getElementById('latlng_display'),
     filterDesktop: document.getElementById('filter_province_desktop'),
-    filterDistrictDesktop: document.getElementById('filter_district_desktop'), // New filter
+    filterDistrictDesktop: document.getElementById('filter_district_desktop'),
     filterMobile: document.getElementById('filter_province_mobile'),
-    filterDistrictMobile: document.getElementById('filter_district_mobile'), // New filter
+    filterDistrictMobile: document.getElementById('filter_district_mobile'),
     searchDesktop: document.getElementById('q_desktop'), searchMobile: document.getElementById('q_mobile'),
     slider: document.getElementById('imageSlider'), sliderImg: document.getElementById('sliderMainImage'),
     sliderCounter: document.getElementById('sliderCounter'),
@@ -393,16 +383,15 @@ const dom = {
     viewContact: document.getElementById('viewContact'), viewLocation: document.getElementById('viewLocation'),
     viewBody: document.getElementById('viewBody'), viewMapContainer: document.getElementById('viewMapContainer'),
     viewImages: document.getElementById('viewImages'), viewDeleteBtn: document.getElementById('btnDeletePost'),
-    btnCall: document.getElementById('btnCall') // Call button
+    btnCall: document.getElementById('btnCall')
 };
 
 // --- INIT ---
 function init() {
     populateProvinces();
-    loadPosts(); // Load from API
+    loadPosts();
     initMap();
     
-    // Event Listeners
     [dom.searchDesktop, dom.searchMobile, dom.filterDistrictDesktop, dom.filterDistrictMobile].forEach(el => el.addEventListener('input', debounce(applyFilters, 300)));
     [dom.filterDesktop, dom.filterMobile].forEach(el => el.addEventListener('change', (e) => {
         dom.filterDesktop.value = e.target.value; dom.filterMobile.value = e.target.value; applyFilters();
@@ -435,7 +424,6 @@ async function loadPosts() {
         
         const data = await response.json();
         
-        // Parse data from Google Sheets
         let rawData = [];
         if (Array.isArray(data)) rawData = data;
         else if (data.data && Array.isArray(data.data)) rawData = data.data;
@@ -445,7 +433,7 @@ async function loadPosts() {
             title: item.title || 'ไม่มีชื่อโครงการ',
             price: Number(item.price) || 0,
             province: item.province || 'ไม่ระบุ',
-            district: item.district || '', // Load district
+            district: item.district || '',
             address: item.address || '',
             contact_name: item.contact_name || '',
             body: item.body || '',
@@ -492,9 +480,14 @@ function applyFilters() {
     const prov = dom.filterDesktop.value;
     
     filteredPosts = posts.filter(p => {
-        const matchText = (p.title + p.body + (p.price + "")).toLowerCase().includes(q);
-        // Force convert to string before toLowerCase
-        const matchDist = (String(p.district || "")).toLowerCase().includes(qDist);
+        // FIX: Force convert everything to string before toLowerCase to prevent crashes
+        const title = String(p.title || "");
+        const body = String(p.body || "");
+        const price = String(p.price || "");
+        const district = String(p.district || "");
+        
+        const matchText = (title + body + price).toLowerCase().includes(q);
+        const matchDist = district.toLowerCase().includes(qDist);
         const matchProv = prov === 'all' || p.province === prov;
         return matchText && matchDist && matchProv;
     });
@@ -642,8 +635,8 @@ function resetForm() {
     dom.title.value = '';
     dom.price.value = '';
     dom.contactName.value = '';
-    dom.address.value = ''; // Announcer Name
-    dom.district.value = ''; // District
+    dom.address.value = '';
+    dom.district.value = '';
     dom.body.value = '';
     dom.province.value = '';
     dom.imgInput.value = '';
@@ -671,8 +664,10 @@ function viewPost(id) {
     dom.viewTitle.textContent = post.title;
     dom.viewPrice.textContent = '฿' + parseInt(post.price).toLocaleString();
     dom.viewContact.textContent = post.contact_name || '-';
-    // Update phone button
-    dom.btnCall.href = `tel:${post.contact_name}`;
+    
+    // FIX: Clean tel number safely
+    const cleanTel = (String(post.contact_name || '')).replace(/[^0-9]/g, '');
+    dom.btnCall.href = cleanTel ? `tel:${cleanTel}` : '#';
     
     dom.viewLocation.textContent = (post.district ? post.district + ' ' : '') + post.province;
     dom.viewBody.textContent = post.body || '-';
@@ -729,7 +724,6 @@ function openImageSlider(index) {
     sliderIndex = index;
     updateSliderImage();
     
-    // Close view dialog if open
     if (dom.viewDlg.open) {
         dom.viewDlg.close();
         reopenViewOnSliderClose = true;
@@ -747,7 +741,6 @@ function closeImageSlider() {
     dom.slider.classList.add('slider-hidden');
     setTimeout(() => {
         dom.slider.classList.add('hidden');
-        // Reopen view dialog if it was closed by slider
         if (reopenViewOnSliderClose) {
             dom.viewDlg.showModal();
             reopenViewOnSliderClose = false;
@@ -775,7 +768,7 @@ function appendImages(input) {
         filesToProcess.forEach(file => {
             const reader = new FileReader();
             reader.onload = (e) => {
-                formImages.push(e.target.result); // Base64
+                formImages.push(e.target.result); 
                 renderFormImages();
             };
             reader.readAsDataURL(file);
@@ -843,30 +836,26 @@ async function savePost() {
     icon.className = 'fa-solid fa-circle-notch fa-spin';
     btn.disabled = true;
 
-    // เตรียม Payload เป็น Object (ไม่ใช่ FormData)
     const payload = {
-        action: 'add', // ต้องตรงกับ GAS
+        action: 'add', 
         title: dom.title.value,
         price: dom.price.value,
         province: dom.province.value,
-        district: dom.district.value, // Added district
-        address: dom.address.value, // Announcer name
+        district: dom.district.value, 
+        address: dom.address.value, 
         contact_name: dom.contactName.value,
         body: dom.body.value,
         lat: dom.lat.value,
         lng: dom.lng.value,
-        images: formImages // ส่ง Array ของ Base64 ได้เลย
+        images: formImages
     };
 
     try {
-        // ส่งเป็น JSON String
         const res = await fetch(API_URL, {
             method: 'POST',
             body: JSON.stringify(payload)
         });
         
-        // Optimistic UI Update (Update Local State Immediately)
-        // ใช้ ID ชั่วคราว
         const newPost = {
             id: Date.now(), 
             title: dom.title.value,
@@ -892,7 +881,6 @@ async function savePost() {
             showConfirmButton: false
         });
         
-        // รีโหลดข้อมูลจาก Server จริงๆ อีกครั้งเพื่อเอา ID ที่ถูกต้อง
         setTimeout(loadPosts, 2000); 
         closeModal();
 
@@ -907,7 +895,6 @@ async function savePost() {
 }
 
 function deletePost(id) {
-    // ปิด dialog แรกทันทีที่กดลบ
     closeViewModal();
     
     Swal.fire({
@@ -957,7 +944,6 @@ function fillDemoData() {
     const lng = 100.4000 + (Math.random() * 0.05);
     updateMarker(lat, lng);
     
-    // ใช้รูปตัวอย่างบ้าน
     formImages = ["https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"];
     renderFormImages();
 }
